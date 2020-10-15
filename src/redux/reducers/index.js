@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux'
+import postReducer from './postReducer'
 
 const rootReducer = combineReducers({
-  // property: propertyReducer,
-  // user: userReducer,
+  post: postReducer,
 })
 
 export default rootReducer
