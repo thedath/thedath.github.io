@@ -1,17 +1,18 @@
 import React from "react";
 import usePost from "../../redux/hooks/usePost";
 import {
+  Box,
   Button,
   Card,
-  CardActions,
   CardContent,
   colors,
+  Grid,
   makeStyles,
   Typography,
 } from "@material-ui/core";
-import moment from 'moment';
+import moment from "moment";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     marginBottom: theme.spacing(2),
   },
@@ -27,38 +28,51 @@ const useStyles = makeStyles(theme => ({
     marginBottom: 12,
   },
   timeTravelButton: {
-    marginLeft: "auto",
     backgroundColor: colors.green[400],
     color: "white",
-    marginRight: theme.spacing(2),
-    marginBottom: theme.spacing(2),
-  }
+  },
 }));
 
 const ActionHistoryItem = ({ index, title, date, fromIndex, toIndex }) => {
   const classes = useStyles();
   const { travelThroughTime } = usePost();
   return (
-    <Card className={classes.root} elevation={3}>
+    <Card className={classes.root} elevation={2}>
       <CardContent>
-        <Typography variant="h6" gutterBottom>
-          {title}
-        </Typography>
-        <Typography variant="caption" gutterBottom>
-          {moment().diff(moment(date), 'seconds')} seconds ago
-        </Typography>
+        <Grid container>
+          <Grid item xs>
+            <Box height={70}>
+              <Typography variant="subtitle1" gutterBottom>
+                {title}
+              </Typography>
+              <Typography variant="caption" gutterBottom>
+                {moment().diff(moment(date), "seconds")} seconds ago
+              </Typography>
+            </Box>
+          </Grid>
+          <Grid item xs={4}>
+            <Box
+              display="flex"
+              flexDirection="row-reverse"
+              alignItems="flex-end"
+              height={70}
+            >
+              <Box>
+                <Button
+                  size="small"
+                  variant="contained"
+                  className={classes.timeTravelButton}
+                  onClick={() => {
+                    travelThroughTime(index);
+                  }}
+                >
+                  Time Travel
+                </Button>
+              </Box>
+            </Box>
+          </Grid>
+        </Grid>
       </CardContent>
-      <CardActions>
-        <Button
-          variant="contained"
-          className={classes.timeTravelButton}
-          onClick={() => {
-            travelThroughTime(index);
-          }}
-        >
-          Time Travel
-        </Button>
-      </CardActions>
     </Card>
   );
 };

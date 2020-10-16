@@ -1,30 +1,39 @@
 import React, { useEffect } from "react";
-import { colors, Container, Grid, makeStyles } from "@material-ui/core";
+import { Container, Grid } from "@material-ui/core";
 import PostList from "../components/PostList";
 import ActionHistoryItemList from "../components/ActionHistoryItemList";
 import usePost from "../../redux/hooks/usePost";
+import Backdrop from "@material-ui/core/Backdrop";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    backgroundColor: colors.grey[100],
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: '#3949AB',
+    backgroundColor: 'white',
   },
 }));
 
 const Main = () => {
   const classes = useStyles();
-  // using the state of post and its' actions
   const { postProcessing, postErrorMessage, fetchPosts } = usePost();
 
-  // fetching posts on initial load
   useEffect(() => {
     fetchPosts(5);
   }, [fetchPosts]);
 
-  return (
+  return postProcessing ? (
+    <Backdrop open={true} className={classes.backdrop}>
+      <CircularProgress />
+    </Backdrop>
+  ) : postErrorMessage !== "" ? (
+    postErrorMessage
+  ) : (
     <div
-      // className={classes.root}
       style={{
-        background: 'linear-gradient(172deg, #3949AB 0%, #3949AB 15%, #EEEEEE 15%, #EEEEEE 100%)',
+        background:
+          "linear-gradient(172deg, #3949AB 0%, #3949AB 15%, #EEEEEE 15%, #EEEEEE 100%)",
       }}
     >
       <Container maxWidth="lg">

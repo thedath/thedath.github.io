@@ -30,7 +30,7 @@ const ActionHistoryItemList = () => {
   const classes = useStyles();
   const { postHistory } = usePost();
   return (
-    <Card className={classes.root} elevation={4}>
+    <Card className={classes.root} elevation={5}>
       <CardHeader title="List of action commited" />
       <Divider />
       <CardContent className={classes.cardContent}>

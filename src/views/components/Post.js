@@ -35,13 +35,16 @@ const useStyles = makeStyles(theme => ({
   down: {
     color: colors.red[700],
   },
+  avatar: {
+    backgroundColor: colors.purple[400]
+  }
 }));
 
 const Post = ({ index, id, title, body, userId, upVisible, downVisible }) => {
   const classes = useStyles();
   const { movePost } = usePost();
   return (
-    <Card className={classes.root}>
+    <Card className={classes.root} elevation={2}>
       <CardHeader
         avatar={
           <Avatar aria-label="recipe" className={classes.avatar}>

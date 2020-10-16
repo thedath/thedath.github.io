@@ -3,14 +3,14 @@ import usePost from "../../redux/hooks/usePost";
 import { makeStyles, Typography } from "@material-ui/core";
 import Post from "../components/Post";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     padding: theme.spacing(2),
   },
   heading: {
     margin: theme.spacing(2),
     color: "white",
-  }
+  },
 }));
 
 const PostList = () => {
@@ -18,16 +18,18 @@ const PostList = () => {
   const { postList } = usePost();
   return (
     <div className={classes.root}>
-      <Typography className={classes.heading} variant="h5" >Sortable Post List</Typography>
-      {postList.map((post, index) => (
-        <Post
-          key={`post-key-${post.id}`}
-          index={index}
-          {...post}
-          upVisible={index !== 0}
-          downVisible={index + 1 < postList.length}
-        />
-      ))}
+      <Typography className={classes.heading} variant="h4">
+        Sortable Post List
+      </Typography>
+        {postList.map((post, index) => (
+          <Post
+            key={`post-key-${post.id}`}
+            index={index}
+            {...post}
+            upVisible={index !== 0}
+            downVisible={index + 1 < postList.length}
+          />
+        ))}
     </div>
   );
 };
