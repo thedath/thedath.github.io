@@ -11,6 +11,7 @@ import {
   Typography,
 } from "@material-ui/core";
 import moment from "moment";
+import PropTypes from 'prop-types';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -33,6 +34,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+/**
+ * Single post action history element
+ * 
+ * @param {number} index Index of this post action history in post array 
+ * @param {string} title Title of the post action history
+ * @param {number} date Date in milliseconds
+ * @param {number} fromIndex Index of the post in post array, before this action happened
+ * @param {number} toIndex Index of the post in post array, after this action happened
+ */
 const ActionHistoryItem = ({ index, title, date, fromIndex, toIndex }) => {
   const classes = useStyles();
   const { travelThroughTime } = usePost();
@@ -76,5 +86,14 @@ const ActionHistoryItem = ({ index, title, date, fromIndex, toIndex }) => {
     </Card>
   );
 };
+
+// prop validation
+ActionHistoryItem.propTypes = {
+  index: PropTypes.number.isRequired, 
+  id: PropTypes.number.isRequired, 
+  date: PropTypes.number.isRequired, 
+  fromIndex: PropTypes.number, 
+  toIndex: PropTypes.number, 
+}
 
 export default ActionHistoryItem;

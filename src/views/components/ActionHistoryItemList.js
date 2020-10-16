@@ -31,13 +31,14 @@ const useStyles = makeStyles((theme) => ({
  */
 const ActionHistoryItemList = () => {
   const classes = useStyles();
-  // referencing the post history list state 
+  // referencing the post history list state
   const { postHistory } = usePost();
   return (
     <Card className={classes.root} elevation={5}>
       <CardHeader title="List of action commited" />
       <Divider />
       <CardContent className={classes.cardContent}>
+        {/* Info text when there is not history to show */}
         {postHistory.length === 0 && (
           <Typography variant="subtitle1">
             Move some post to generate action history . . .
