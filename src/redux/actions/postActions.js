@@ -23,7 +23,7 @@ export const fetchPosts = (limit = 10) => async (dispatch) => {
 }
 
 export const movePost = (index, action) => (dispatch) => {
-  // determining the from and to indexes post going to be moved
+  // determining the 'from' and 'to' indexes of the post going to be moved
   let to = index;
   switch (action) {
     case 'up':
