@@ -13,8 +13,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+/**
+ * Component to showing basic list of posts
+ */
 const PostList = () => {
   const classes = useStyles();
+  // referencing the post list state
   const { postList } = usePost();
   return (
     <div className={classes.root}>

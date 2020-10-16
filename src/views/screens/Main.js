@@ -19,15 +19,19 @@ const Main = () => {
   const classes = useStyles();
   const { postProcessing, postErrorMessage, fetchPosts } = usePost();
 
+  // initiating post fecth
   useEffect(() => {
+    // requesting the exact amount of post needed
     fetchPosts(5);
   }, [fetchPosts]);
 
   return postProcessing ? (
+    // showing a backdrop untill posts getting fetched
     <Backdrop open={true} className={classes.backdrop}>
       <CircularProgress />
     </Backdrop>
   ) : postErrorMessage !== "" ? (
+    // showing the error from post request over network
     postErrorMessage
   ) : (
     <div

@@ -15,6 +15,7 @@ import {
   ArrowUpward as UpIcon,
   ArrowDownward as DownIcon,
 } from "@material-ui/icons";
+import PropTypes from 'prop-types';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -40,8 +41,20 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+/**
+ * Single post element
+ * 
+ * @param {number} index Index of this post in post array 
+ * @param {number} id ID of the post
+ * @param {string} title Title of the post
+ * @param {string} body Body (description) of the post
+ * @param {number} userId ID of the user of this post
+ * @param {boolean} upVisible Pass 'true' if Up arrow needs to be visible
+ * @param {boolean} downVisible Pass 'true' if Down arrow needs to be visible
+ */
 const Post = ({ index, id, title, body, userId, upVisible, downVisible }) => {
   const classes = useStyles();
+  // importing the movePost function from isePost hook
   const { movePost } = usePost();
   return (
     <Card className={classes.root} elevation={2}>
@@ -93,5 +106,16 @@ const Post = ({ index, id, title, body, userId, upVisible, downVisible }) => {
     </Card>
   );
 };
+
+// prop validation
+Post.propTypes = {
+  index: PropTypes.number.isRequired, 
+  id: PropTypes.number.isRequired, 
+  title: PropTypes.string.isRequired, 
+  body: PropTypes.string.isRequired, 
+  userId: PropTypes.number, 
+  upVisible: PropTypes.bool.isRequired,
+  downVisible: PropTypes.bool.isRequired,
+}
 
 export default Post;

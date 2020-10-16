@@ -26,8 +26,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+/**
+ * Component to show post action history list
+ */
 const ActionHistoryItemList = () => {
   const classes = useStyles();
+  // referencing the post history list state 
   const { postHistory } = usePost();
   return (
     <Card className={classes.root} elevation={5}>
