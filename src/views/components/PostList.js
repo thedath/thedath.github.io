@@ -1,12 +1,24 @@
 import React from "react";
 import usePost from "../../redux/hooks/usePost";
-import { List } from "@material-ui/core";
+import { makeStyles, Typography } from "@material-ui/core";
 import Post from "../components/Post";
 
+const useStyles = makeStyles(theme => ({
+  root: {
+    padding: theme.spacing(2),
+  },
+  heading: {
+    margin: theme.spacing(2),
+    color: "white",
+  }
+}));
+
 const PostList = () => {
+  const classes = useStyles();
   const { postList } = usePost();
   return (
-    <List>
+    <div className={classes.root}>
+      <Typography className={classes.heading} variant="h5" >Sortable Post List</Typography>
       {postList.map((post, index) => (
         <Post
           key={`post-key-${post.id}`}
@@ -16,7 +28,7 @@ const PostList = () => {
           downVisible={index + 1 < postList.length}
         />
       ))}
-    </List>
+    </div>
   );
 };
 

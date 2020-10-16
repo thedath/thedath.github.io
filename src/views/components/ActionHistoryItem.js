@@ -5,13 +5,15 @@ import {
   Card,
   CardActions,
   CardContent,
+  colors,
   makeStyles,
   Typography,
 } from "@material-ui/core";
+import moment from 'moment';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
   root: {
-    minWidth: 275,
+    marginBottom: theme.spacing(2),
   },
   bullet: {
     display: "inline-block",
@@ -24,25 +26,32 @@ const useStyles = makeStyles({
   pos: {
     marginBottom: 12,
   },
-});
+  timeTravelButton: {
+    marginLeft: "auto",
+    backgroundColor: colors.green[400],
+    color: "white",
+    marginRight: theme.spacing(2),
+    marginBottom: theme.spacing(2),
+  }
+}));
 
 const ActionHistoryItem = ({ index, title, date, fromIndex, toIndex }) => {
   const classes = useStyles();
   const { travelThroughTime } = usePost();
   return (
-    <Card className={classes.root} variant="outlined">
+    <Card className={classes.root} elevation={3}>
       <CardContent>
-        <Typography variant="subtitle1" gutterBottom>
+        <Typography variant="h6" gutterBottom>
           {title}
         </Typography>
         <Typography variant="caption" gutterBottom>
-          {date}
+          {moment().diff(moment(date), 'seconds')} seconds ago
         </Typography>
-        {fromIndex} {toIndex}
       </CardContent>
       <CardActions>
         <Button
-          size="small"
+          variant="contained"
+          className={classes.timeTravelButton}
           onClick={() => {
             travelThroughTime(index);
           }}
