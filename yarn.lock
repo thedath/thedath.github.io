@@ -1308,7 +1308,7 @@
     "@types/yargs" "^15.0.0"
     chalk "^4.0.0"
 
-"@material-ui/core@^4.11.0":
+"@material-ui/core@^4.11.0", "@material-ui/core@^4.4.0":
   version "4.11.0"
   resolved "https://registry.yarnpkg.com/@material-ui/core/-/core-4.11.0.tgz#b69b26e4553c9e53f2bfaf1053e216a0af9be15a"
   integrity sha512-bYo9uIub8wGhZySHqLQ833zi4ZML+XCBE1XwJ8EuUVSpTWWG57Pm+YugQToJNFsEyiKFhPh8DPD0bgupz8n01g==
@@ -7080,6 +7080,11 @@ mkdirp@^0.5.5:
   dependencies:
     minimist "^1.2.5"
 
+moment@^2.29.1:
+  version "2.29.1"
+  resolved "https://registry.yarnpkg.com/moment/-/moment-2.29.1.tgz#b2be769fa31940be9eeea6469c075e35006fa3d3"
+  integrity sha512-kHmoybcPV8Sqy59DwNDY3Jefr64lK/by/da0ViFcuA4DH0vQg5Q6Ze5VimxkfQNSC+Mls/Kx53s7TjP1RhFEDQ==
+
 move-concurrently@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/move-concurrently/-/move-concurrently-1.0.1.tgz#be2c005fda32e0b29af1f05d7c4b33214c701f92"
@@ -8783,6 +8788,14 @@ raw-body@2.4.0:
     http-errors "1.7.2"
     iconv-lite "0.4.24"
     unpipe "1.0.0"
+
+react-animated-list@^0.1.4:
+  version "0.1.4"
+  resolved "https://registry.yarnpkg.com/react-animated-list/-/react-animated-list-0.1.4.tgz#604ca318de2225f024310a459e8e574dd1626e68"
+  integrity sha512-Ce9zRjUao4u4sSL08dT5Ofk09/lyfq6UBJ/+RPLn+Fg5n4w1Kr+tef8E8oFwl28YrtN5vEE4ATTh8ovIDpIgfg==
+  dependencies:
+    "@material-ui/core" "^4.4.0"
+    use-state-api-hooks "^1.2.1"
 
 react-app-polyfill@^1.0.6:
   version "1.0.6"
@@ -10540,6 +10553,11 @@ url@^0.11.0:
   dependencies:
     punycode "1.3.2"
     querystring "0.2.0"
+
+use-state-api-hooks@^1.2.1:
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/use-state-api-hooks/-/use-state-api-hooks-1.5.0.tgz#c864aaa0d8be7b1cc9d6e853c25712b6b8c01566"
+  integrity sha512-34LSQm35ZeEiCY0QbqzP/m5l9t5cwootBFJHSxmhjkiCUe5GtgiucBEONe/VLJFUCuTpmA5mWBZYGFSivsJsBw==
 
 use@^3.1.0:
   version "3.1.1"
