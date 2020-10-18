@@ -14,9 +14,6 @@ import ActionHistoryItem, { isValidHistoryItem } from "./ActionHistoryItem";
 const useStyles = makeStyles((theme) => ({
   root: {
     marginTop: theme.spacing(6),
-    paddingLeft: theme.spacing(2),
-    paddingRight: theme.spacing(2),
-    paddingBottom: theme.spacing(2),
   },
   heading: {
     margin: theme.spacing(2),
