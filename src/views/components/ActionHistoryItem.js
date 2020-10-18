@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import usePost from "../../redux/hooks/usePost";
 import {
   Box,
@@ -6,6 +6,7 @@ import {
   Card,
   CardContent,
   colors,
+  Fade,
   Grid,
   makeStyles,
   Typography,
@@ -44,14 +45,10 @@ export const isValidHistoryItem = (historyItemObj, strict = false) => {
     historyItemObj.fromIndex !== undefined &&
     typeof historyItemObj.fromIndex === "number" &&
     historyItemObj.toIndex !== undefined &&
-    typeof historyItemObj.toIndex === "number" && 
-    (
-      !strict || 
-      (
-        historyItemObj.index !== undefined &&
-        typeof historyItemObj.index === "number"
-      )
-    )
+    typeof historyItemObj.toIndex === "number" &&
+    (!strict ||
+      (historyItemObj.index !== undefined &&
+        typeof historyItemObj.index === "number"))
   );
 };
 
@@ -73,6 +70,15 @@ const ActionHistoryItem = ({
 }) => {
   const classes = useStyles();
   const { travelThroughTime } = usePost();
+  // state for animation
+  const [animate, setAnimate] = useState(true);
+  // on every rendering perform enter animation
+  useEffect(() => {
+    setAnimate(true);
+    return () => {
+      setAnimate(false);
+    }
+  }, [index]);
   // history item does not get rendered if it is not a valid history item
   if (
     !isValidHistoryItem({ index, movedPostId, date, fromIndex, toIndex }, true)
@@ -81,55 +87,65 @@ const ActionHistoryItem = ({
   }
   // call back function for button on click
   const onClick = () => {
+    setAnimate(true);
     travelThroughTime(index);
   };
   // get time passed in seconds
   const getSecondsAgoLabel = () =>
     `${moment().diff(moment(date), "seconds")} seconds ago`;
   return (
-    <Card 
-      data-testid={`action-history-item-${index}`}
-      data-moved-post-id={`moved-post-id-${movedPostId}`}
-      aria-label="action-history-item"
-      className={classes.root} 
-      elevation={2}
+    <Fade
+      in={animate}
+      timeout={{
+        appear: 1000,
+        enter: 1000,
+        exit: 1000,
+      }}
     >
-      <CardContent>
-        <Grid container>
-          <Grid item xs>
-            <Box height={70}>
-              <Typography variant="subtitle1" gutterBottom>
-                {`Moved post ${movedPostId} from ${fromIndex} index to ${toIndex} index`}
-              </Typography>
-              <Typography variant="caption" gutterBottom>
-                {getSecondsAgoLabel()}
-              </Typography>
-            </Box>
-          </Grid>
-          <Grid item xs={4}>
-            <Box
-              display="flex"
-              flexDirection="row-reverse"
-              alignItems="flex-end"
-              height={70}
-            >
-              <Box>
-                <Button
-                  data-testid={`history-item-time-travel-button-${index}`}
-                  aria-label="time travel"
-                  size="small"
-                  variant="contained"
-                  className={classes.timeTravelButton}
-                  onClick={onClick}
-                >
-                  Time Travel
-                </Button>
+      <Card
+        data-testid={`action-history-item-${index}`}
+        data-moved-post-id={`moved-post-id-${movedPostId}`}
+        aria-label="action-history-item"
+        className={classes.root}
+        elevation={2}
+      >
+        <CardContent>
+          <Grid container>
+            <Grid item xs>
+              <Box height={70}>
+                <Typography variant="subtitle1" gutterBottom>
+                  {`Moved post ${movedPostId} from ${fromIndex} index to ${toIndex} index`}
+                </Typography>
+                <Typography variant="caption" gutterBottom>
+                  {getSecondsAgoLabel()}
+                </Typography>
               </Box>
-            </Box>
+            </Grid>
+            <Grid item xs={4}>
+              <Box
+                display="flex"
+                flexDirection="row-reverse"
+                alignItems="flex-end"
+                height={70}
+              >
+                <Box>
+                  <Button
+                    data-testid={`history-item-time-travel-button-${index}`}
+                    aria-label="time travel"
+                    size="small"
+                    variant="contained"
+                    className={classes.timeTravelButton}
+                    onClick={onClick}
+                  >
+                    Time Travel
+                  </Button>
+                </Box>
+              </Box>
+            </Grid>
           </Grid>
-        </Grid>
-      </CardContent>
-    </Card>
+        </CardContent>
+      </Card>
+    </Fade>
   );
 };
 
