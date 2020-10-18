@@ -12,7 +12,6 @@ import PostList from "./PostList";
 jest.mock("axios");
 
 describe("<PostList />", () => {
-  it()
   test("Incompatible post objects API response will not ger rendered", async () => {
     // mocked axios with dummy response
     axios.get.mockResolvedValue({

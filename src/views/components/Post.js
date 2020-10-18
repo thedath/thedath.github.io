@@ -94,7 +94,12 @@ const Post = ({ index, id, title, body, userId, upVisible, downVisible }) => {
     movePost(index, action);
   }
   return (
-    <Card className={classes.root} elevation={2}>
+    <Card 
+      data-testid={`post-${id}`}
+      aria-label="post"
+      className={classes.root} 
+      elevation={2}
+    >
       <CardHeader
         avatar={
           <Avatar aria-label="recipe" className={classes.avatar}>

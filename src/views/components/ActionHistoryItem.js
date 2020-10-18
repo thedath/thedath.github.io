@@ -87,7 +87,13 @@ const ActionHistoryItem = ({
   const getSecondsAgoLabel = () =>
     `${moment().diff(moment(date), "seconds")} seconds ago`;
   return (
-    <Card className={classes.root} elevation={2}>
+    <Card 
+      data-testid={`action-history-item-${index}`}
+      data-moved-post-id={`moved-post-id-${movedPostId}`}
+      aria-label="action-history-item"
+      className={classes.root} 
+      elevation={2}
+    >
       <CardContent>
         <Grid container>
           <Grid item xs>
@@ -109,6 +115,8 @@ const ActionHistoryItem = ({
             >
               <Box>
                 <Button
+                  data-testid={`history-item-time-travel-button-${index}`}
+                  aria-label="time travel"
                   size="small"
                   variant="contained"
                   className={classes.timeTravelButton}
