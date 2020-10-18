@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import usePost from "../../redux/hooks/usePost";
 import {
   Avatar,
@@ -66,9 +66,6 @@ export const isValidPost = (ostObj, strict = false) => {
   );
 };
 
-// adding scroll to element feature
-const scrollToRef = (ref) => window.scrollTo(0, ref.current.offsetTop + 20);
-
 /**
  * Single post element
  *
@@ -93,8 +90,6 @@ const Post = ({ index, id, title, body, userId, upVisible, downVisible }) => {
       setAnimate(false);
     }
   }, [index]);
-  const refForScroll = useRef(null)
-  const executeScroll = () => scrollToRef(refForScroll)
 
   // check for validity of the post, if invalid nothing gets rendered
   if (
@@ -109,7 +104,6 @@ const Post = ({ index, id, title, body, userId, upVisible, downVisible }) => {
   const handleMove = (action) => {
     movePost(index, action);
     setAnimate(false);
-    executeScroll();
   };
   return (
     <Fade
@@ -125,7 +119,6 @@ const Post = ({ index, id, title, body, userId, upVisible, downVisible }) => {
         aria-label="post"
         className={classes.root}
         elevation={2}
-        ref={refForScroll}
       >
         <CardHeader
           avatar={
