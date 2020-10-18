@@ -8,18 +8,24 @@ export const POST_TRAVEL_THROUGH_TIME = 'post-time-travel'
 
 export const fetchPosts = (limit = 10) => async (dispatch) => {
   dispatch({ type: POST_SET_PROCESSING })
-  await Axios.get('https://jsonplaceholder.typicode.com/posts')
-  .then(response => {
-    // check whether the response is an arra prior to do array slice
-    let posts = [];
-    if (response.data && Array.isArray(response.data)) {
-      posts = response.data.slice(0, limit)
-    }
-    dispatch({ type: POST_SET_POST_LIST, payload: posts })
-  })
-  .catch(error => {
-    dispatch({ type: POST_SET_ERROR, payload: error })
-  })
+  try {
+    await Axios.get('https://jsonplaceholder.typicode.com/posts')
+    .then(response => {
+      // check whether the response is an arra prior to do array slice
+      let posts = [];
+      if (response.data && Array.isArray(response.data)) {
+        posts = response.data.slice(0, limit);
+        dispatch({ type: POST_SET_POST_LIST, payload: posts })
+      } else {
+        dispatch({ type: POST_SET_ERROR, payload: "Invalid response from server xxx" })
+      }
+    })
+    .catch(error => {
+      dispatch({ type: POST_SET_ERROR, payload: "Request failed or invalid response" })
+    })
+  } catch (error) {
+    dispatch({ type: POST_SET_ERROR, payload: "Unable perform post fetch call" })
+  }
 }
 
 export const movePost = (index, action) => (dispatch) => {

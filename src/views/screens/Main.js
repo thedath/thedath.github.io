@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Container, Grid } from "@material-ui/core";
+import { Box, colors, Container, Grid, Typography } from "@material-ui/core";
 import PostList from "../components/PostList";
 import ActionHistoryItemList from "../components/ActionHistoryItemList";
 import usePost from "../../redux/hooks/usePost";
@@ -13,6 +13,10 @@ const useStyles = makeStyles((theme) => ({
     color: '#3949AB',
     backgroundColor: 'white',
   },
+  error: {
+    color: colors.red[400],
+    marginTop: theme.spacing(10),
+  }
 }));
 
 const Main = () => {
@@ -32,7 +36,11 @@ const Main = () => {
     </Backdrop>
   ) : postErrorMessage !== "" ? (
     // showing the error from post request over network
-    postErrorMessage
+    <Container maxWidth="lg">
+      <Box display="flex" flexDirection="" justifyContent="center">
+        <Typography variant="h5" className={classes.error}>Error: {postErrorMessage}</Typography>
+      </Box>
+    </Container>
   ) : (
     <div
       style={{
