@@ -19,13 +19,25 @@ const useStyles = makeStyles((theme) => ({
 const PostList = () => {
   const classes = useStyles();
   // referencing the post list state
-  const { postList } = usePost();
-  return (
-    <div className={classes.root}>
-      <Typography className={classes.heading} variant="h4">
-        Sortable Post List
-      </Typography>
-        {postList.map((post, index) => (
+  const { postList } = usePost(); 
+  // function for populating list of posts
+  const renderPostList = () =>
+    postList.map((post, index) => {
+      // checks index, id, title, body, userId
+      // exists in the object otherwise no UI will be returned
+      if (
+        post.id !== undefined &&
+        typeof post.id === "number" &&
+        post.userId !== undefined &&
+        typeof post.userId === "number" &&
+        post.title !== undefined &&
+        typeof post.title === "string" &&
+        post.title !== "" &&
+        post.body !== undefined &&
+        typeof post.body === "string" &&
+        post.body !== ""
+      ) {
+        return (
           <Post
             key={`post-key-${post.id}`}
             index={index}
@@ -33,7 +45,18 @@ const PostList = () => {
             upVisible={index !== 0}
             downVisible={index + 1 < postList.length}
           />
-        ))}
+        );
+      } else {
+        return null;
+      }
+    });
+
+  return (
+    <div className={classes.root}>
+      <Typography className={classes.heading} variant="h4">
+        Sortable Post List
+      </Typography>
+      {renderPostList()}
     </div>
   );
 };

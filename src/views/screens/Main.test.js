@@ -1,11 +1,16 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
-import App from "./App";
 import axios from "axios";
+
+import { createStore, applyMiddleware } from "redux";
+import { Provider } from "react-redux";
+import ReduxThunk from "redux-thunk";
+import reducers from "../../redux/reducers";
+import Main from "./Main";
 
 jest.mock("axios");
 
-describe("App", () => {
+describe("<Main />", () => {
   test("Post list from API reponse gets loaded on UI", async () => {
     // mocked axios with dummy response
     axios.get.mockResolvedValue({
@@ -43,7 +48,11 @@ describe("App", () => {
       ],
     });
     // after preperation apps get rendered
-    render(<App />);
+    render(
+      <Provider store={createStore(reducers, {}, applyMiddleware(ReduxThunk))}>
+        <Main />
+      </Provider>
+    );
     // checking the expected response
     expect(await screen.findByText(/Test title 1/)).toBeInTheDocument();
     expect(screen.queryByText(/Test title 2/)).toBeInTheDocument();
@@ -64,10 +73,16 @@ describe("App", () => {
         body: "Test body 1",
       },
     });
-    render(<App />);
+    render(
+      <Provider store={createStore(reducers, {}, applyMiddleware(ReduxThunk))}>
+        <Main />
+      </Provider>
+    );
     // checking the expected response
     expect(await screen.findByText(/Error:/)).toBeInTheDocument();
-    expect(screen.queryByText(/Invalid response from server/)).toBeInTheDocument();
+    expect(
+      screen.queryByText(/Invalid response from server/)
+    ).toBeInTheDocument();
     expect(screen.queryByText(/Test title 1/)).not.toBeInTheDocument();
     axios.mockReset();
   });
@@ -75,18 +90,28 @@ describe("App", () => {
   test("Error is shown when API gives an error response", async () => {
     // mocked axios with dummy error
     axios.get.mockReturnValue(Promise.reject(new Error()));
-    render(<App />);
+    render(
+      <Provider store={createStore(reducers, {}, applyMiddleware(ReduxThunk))}>
+        <Main />
+      </Provider>
+    );
     expect(await screen.findByText(/Error:/)).toBeInTheDocument();
-    expect(screen.queryByText(/Request failed or invalid response/)).toBeInTheDocument();
+    expect(
+      screen.queryByText(/Request failed or invalid response/)
+    ).toBeInTheDocument();
   });
 
   test("Error is shown when API response triggers an exception", async () => {
     // mocked axios with dummy error
     axios.get.mockReturnValue(new Error());
-    render(<App />);
+    render(
+      <Provider store={createStore(reducers, {}, applyMiddleware(ReduxThunk))}>
+        <Main />
+      </Provider>
+    );
     expect(await screen.findByText(/Error:/)).toBeInTheDocument();
-    expect(screen.queryByText(/Unable perform post fetch call/)).toBeInTheDocument();
+    expect(
+      screen.queryByText(/Unable perform post fetch call/)
+    ).toBeInTheDocument();
   });
-
-
 });
