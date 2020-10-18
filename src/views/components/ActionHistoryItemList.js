@@ -9,7 +9,7 @@ import {
 } from "@material-ui/core";
 import React from "react";
 import usePost from "../../redux/hooks/usePost";
-import ActionHistoryItem from "./ActionHistoryItem";
+import ActionHistoryItem, { isValidHistoryItem } from "./ActionHistoryItem";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -33,6 +33,21 @@ const ActionHistoryItemList = () => {
   const classes = useStyles();
   // referencing the post history list state
   const { postHistory } = usePost();
+  // function for populating list of history items
+  const renderHistoryItemList = () =>
+    postHistory.map((history, index) => {
+      if (isValidHistoryItem(history)) {
+        return (
+          <ActionHistoryItem
+            key={`history-key-${index}`}
+            index={index}
+            {...history}
+          />
+        );
+      } else {
+        return null;
+      }
+    });
   return (
     <Card className={classes.root} elevation={5}>
       <CardHeader title="List of action commited" />
@@ -45,13 +60,7 @@ const ActionHistoryItemList = () => {
           </Typography>
         )}
         <div className={classes.historyContainer}>
-          {postHistory.map((history, index) => (
-            <ActionHistoryItem
-              key={`history-key-${index}`}
-              index={index}
-              {...history}
-            />
-          ))}
+          {renderHistoryItemList()}
         </div>
       </CardContent>
     </Card>

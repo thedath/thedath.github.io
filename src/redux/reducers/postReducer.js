@@ -60,7 +60,7 @@ const postReducer = (state = initialState, action) => {
           list: swapResponse.newPostList,
           history: [
             {
-              title: `Moved post ${swapResponse.movedPostId} from ${fromIndex} index to ${toIndex} index`,
+              movedPostId: swapResponse.movedPostId,
               date: new Date().getTime(),
               fromIndex,
               toIndex,

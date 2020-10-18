@@ -2,17 +2,11 @@ import React from "react";
 import { render, screen } from "@testing-library/react";
 import axios from "axios";
 
-import { createStore, applyMiddleware } from "redux";
-import { Provider } from "react-redux";
-import ReduxThunk from "redux-thunk";
-import reducers from "../../redux/reducers";
-import Main from "../screens/Main";
-import PostList from "./PostList";
+import App from "./App";
 
 jest.mock("axios");
 
-describe("<PostList />", () => {
-  it()
+describe("<App />", () => {
   test("Incompatible post objects API response will not ger rendered", async () => {
     // mocked axios with dummy response
     axios.get.mockResolvedValue({
@@ -51,13 +45,7 @@ describe("<PostList />", () => {
       ],
     });
 
-    render(
-      <Provider store={createStore(reducers, {}, applyMiddleware(ReduxThunk))}>
-        <Main>
-          <PostList />
-        </Main>
-      </Provider>
-    );
+    render(<App />);
 
     expect(await screen.findByText(/Sortable Post List/)).toBeInTheDocument();
     expect(screen.queryByText(/Test title 1/)).toBeInTheDocument();

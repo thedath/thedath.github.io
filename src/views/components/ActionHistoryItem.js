@@ -11,7 +11,7 @@ import {
   Typography,
 } from "@material-ui/core";
 import moment from "moment";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -34,18 +34,58 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+// checks whether historyItemObj is a valid post object
+export const isValidHistoryItem = (historyItemObj, strict = false) => {
+  return (
+    historyItemObj.movedPostId !== undefined &&
+    typeof historyItemObj.movedPostId === "number" &&
+    historyItemObj.date !== undefined &&
+    typeof historyItemObj.date === "number" &&
+    historyItemObj.fromIndex !== undefined &&
+    typeof historyItemObj.fromIndex === "number" &&
+    historyItemObj.toIndex !== undefined &&
+    typeof historyItemObj.toIndex === "number" && 
+    (
+      !strict || 
+      (
+        historyItemObj.index !== undefined &&
+        typeof historyItemObj.index === "number"
+      )
+    )
+  );
+};
+
 /**
  * Single post action history element
- * 
- * @param {number} index Index of this post action history in post array 
+ *
+ * @param {number} index Index of this post action history in post array
  * @param {string} title Title of the post action history
  * @param {number} date Date in milliseconds
  * @param {number} fromIndex Index of the post in post array, before this action happened
  * @param {number} toIndex Index of the post in post array, after this action happened
  */
-const ActionHistoryItem = ({ index, title, date, fromIndex, toIndex }) => {
+const ActionHistoryItem = ({
+  index,
+  movedPostId,
+  date,
+  fromIndex,
+  toIndex,
+}) => {
   const classes = useStyles();
   const { travelThroughTime } = usePost();
+  // history item does not get rendered if it is not a valid history item
+  if (
+    !isValidHistoryItem({ index, movedPostId, date, fromIndex, toIndex }, true)
+  ) {
+    return null;
+  }
+  // call back function for button on click
+  const onClick = () => {
+    travelThroughTime(index);
+  };
+  // get time passed in seconds
+  const getSecondsAgoLabel = () =>
+    `${moment().diff(moment(date), "seconds")} seconds ago`;
   return (
     <Card className={classes.root} elevation={2}>
       <CardContent>
@@ -53,10 +93,10 @@ const ActionHistoryItem = ({ index, title, date, fromIndex, toIndex }) => {
           <Grid item xs>
             <Box height={70}>
               <Typography variant="subtitle1" gutterBottom>
-                {title}
+                {`Moved post ${movedPostId} from ${fromIndex} index to ${toIndex} index`}
               </Typography>
               <Typography variant="caption" gutterBottom>
-                {moment().diff(moment(date), "seconds")} seconds ago
+                {getSecondsAgoLabel()}
               </Typography>
             </Box>
           </Grid>
@@ -72,9 +112,7 @@ const ActionHistoryItem = ({ index, title, date, fromIndex, toIndex }) => {
                   size="small"
                   variant="contained"
                   className={classes.timeTravelButton}
-                  onClick={() => {
-                    travelThroughTime(index);
-                  }}
+                  onClick={onClick}
                 >
                   Time Travel
                 </Button>
@@ -89,11 +127,11 @@ const ActionHistoryItem = ({ index, title, date, fromIndex, toIndex }) => {
 
 // prop validation
 ActionHistoryItem.propTypes = {
-  index: PropTypes.number.isRequired, 
-  id: PropTypes.number.isRequired, 
-  date: PropTypes.number.isRequired, 
-  fromIndex: PropTypes.number, 
-  toIndex: PropTypes.number, 
-}
+  index: PropTypes.number.isRequired,
+  movedPostId: PropTypes.number.isRequired,
+  date: PropTypes.number.isRequired,
+  fromIndex: PropTypes.number.isRequired,
+  toIndex: PropTypes.number.isRequired,
+};
 
 export default ActionHistoryItem;
