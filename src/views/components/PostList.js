@@ -1,7 +1,7 @@
 import React from "react";
 import usePost from "../../redux/hooks/usePost";
 import { makeStyles, Typography } from "@material-ui/core";
-import Post from "../components/Post";
+import Post, { isValidPost } from "../components/Post";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -19,24 +19,13 @@ const useStyles = makeStyles((theme) => ({
 const PostList = () => {
   const classes = useStyles();
   // referencing the post list state
-  const { postList } = usePost(); 
+  const { postList } = usePost();
   // function for populating list of posts
   const renderPostList = () =>
     postList.map((post, index) => {
       // checks index, id, title, body, userId
       // exists in the object otherwise no UI will be returned
-      if (
-        post.id !== undefined &&
-        typeof post.id === "number" &&
-        post.userId !== undefined &&
-        typeof post.userId === "number" &&
-        post.title !== undefined &&
-        typeof post.title === "string" &&
-        post.title !== "" &&
-        post.body !== undefined &&
-        typeof post.body === "string" &&
-        post.body !== ""
-      ) {
+      if (isValidPost(post)) {
         return (
           <Post
             key={`post-key-${post.id}`}

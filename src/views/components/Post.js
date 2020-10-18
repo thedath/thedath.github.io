@@ -15,9 +15,9 @@ import {
   ArrowUpward as UpIcon,
   ArrowDownward as DownIcon,
 } from "@material-ui/icons";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     margin: theme.spacing(2),
   },
@@ -37,14 +37,38 @@ const useStyles = makeStyles(theme => ({
     color: colors.red[700],
   },
   avatar: {
-    backgroundColor: colors.purple[400]
-  }
+    backgroundColor: colors.purple[400],
+  },
 }));
+
+// checks whether postObj is a valid post object
+export const isValidPost = (ostObj, strict = false) => {
+  return (
+    ostObj.id !== undefined &&
+    typeof ostObj.id === "number" &&
+    ostObj.userId !== undefined &&
+    typeof ostObj.userId === "number" &&
+    ostObj.title !== undefined &&
+    typeof ostObj.title === "string" &&
+    ostObj.title !== "" &&
+    ostObj.body !== undefined &&
+    typeof ostObj.body === "string" &&
+    ostObj.body !== "" &&
+    (!strict ||
+      (strict &&
+        ostObj.index !== undefined &&
+        typeof ostObj.index === "number" &&
+        ostObj.upVisible !== undefined &&
+        typeof ostObj.upVisible === "boolean" &&
+        ostObj.downVisible !== undefined &&
+        typeof ostObj.downVisible === "boolean"))
+  );
+};
 
 /**
  * Single post element
- * 
- * @param {number} index Index of this post in post array 
+ *
+ * @param {number} index Index of this post in post array
  * @param {number} id ID of the post
  * @param {string} title Title of the post
  * @param {string} body Body (description) of the post
@@ -56,6 +80,19 @@ const Post = ({ index, id, title, body, userId, upVisible, downVisible }) => {
   const classes = useStyles();
   // importing the movePost function from isePost hook
   const { movePost } = usePost();
+  // check for validity of the post, if invalid nothing gets rendered
+  if (
+    !isValidPost(
+      { index, id, title, body, userId, upVisible, downVisible },
+      true
+    )
+  ) {
+    return null;
+  }
+  // move post handler function
+  const handleMove = (action) => {
+    movePost(index, action);
+  }
   return (
     <Card className={classes.root} elevation={2}>
       <CardHeader
@@ -66,6 +103,7 @@ const Post = ({ index, id, title, body, userId, upVisible, downVisible }) => {
         }
         title={
           <Typography
+            data-testid={`post-title-${id}`}
             variant="subtitle1"
             gutterBottom
             className={classes.title}
@@ -83,20 +121,18 @@ const Post = ({ index, id, title, body, userId, upVisible, downVisible }) => {
         <div className={classes.movers}>
           {upVisible && (
             <IconButton
+              data-testid={`post-button-move-up-${id}`}
               aria-label="move up"
-              onClick={() => {
-                movePost(index, "up");
-              }}
+              onClick={() => handleMove('up')}
             >
               <UpIcon className={classes.up} />
             </IconButton>
           )}
           {downVisible && (
             <IconButton
+              data-testid={`post-button-move-down-${id}`}
               aria-label="move down"
-              onClick={() => {
-                movePost(index, "down");
-              }}
+              onClick={() => handleMove('down')}
             >
               <DownIcon className={classes.down} />
             </IconButton>
@@ -109,13 +145,13 @@ const Post = ({ index, id, title, body, userId, upVisible, downVisible }) => {
 
 // prop validation
 Post.propTypes = {
-  index: PropTypes.number.isRequired, 
-  id: PropTypes.number.isRequired, 
-  title: PropTypes.string.isRequired, 
-  body: PropTypes.string.isRequired, 
-  userId: PropTypes.number, 
+  index: PropTypes.number.isRequired,
+  id: PropTypes.number.isRequired,
+  title: PropTypes.string.isRequired,
+  body: PropTypes.string.isRequired,
+  userId: PropTypes.number,
   upVisible: PropTypes.bool.isRequired,
   downVisible: PropTypes.bool.isRequired,
-}
+};
 
 export default Post;
